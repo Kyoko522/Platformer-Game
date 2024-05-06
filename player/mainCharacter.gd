@@ -1,49 +1,57 @@
 extends CharacterBody2D
 
+@export var action_suffix := ""
+
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-@onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var attack_timer: Timer = $AttackTimer  # Reference to the Timer node
+const ACCELERATION_SPEED = SPEED * 6.0
+const JUMP_VELOCITY = -565.0
+const TERMINAL_VELOCITY = 700.0  # Define TERMINAL_VELOCITY constant
 
-var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity_value")
-var attacking: bool = false
+@onready var sprite_2d = $Sprite2D  # Reference to the Sprite2D node for the main character
+@onready var jump_sound := $Jump 
 
-func _ready():
-	attack_timer.connect("timeout", Callable(self, "_on_AttackTimer_timeout"))
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-func _physics_process(delta: float) -> void:
-	var direction: float = Input.get_axis("left", "right")
+# Declare _double_jump_charged at the top of the script
+var _double_jump_charged = false
+var doubleSpace := false 
 
-	if not attacking:
-		# Update horizontal velocity
-		velocity.x = direction * SPEED
-
-		# Animation handling
-		if direction != 0:
-			sprite_2d.animation = "walking"
-			sprite_2d.flip_h = direction < 0
-		else:
-			sprite_2d.animation = "idle"
-
-		# Handle jumping
-		if is_on_floor() and Input.is_action_just_pressed("jump"):
-			velocity.y = JUMP_VELOCITY
-
-		# Handle attacking
-		if Input.is_action_just_pressed("attack"):
-			start_attack()
-
-	# Apply gravity every frame
-	velocity.y += gravity * delta
-
-	# Pass the velocity to move_and_slide without any arguments
+func _physics_process(delta):
+	if is_on_floor():
+		_double_jump_charged = true  # Reset the double jump charge when on the floor
+	if Input.is_action_just_pressed("jump" + action_suffix):
+		try_jump()
+	elif Input.is_action_just_released("jump" + action_suffix) and velocity.y < 0.0:
+		# The player let go of jump early, reduce vertical momentum.
+		velocity.y *= 0.6
+	
+	# Handle vertical and horizontal movements.
+	velocity.y = minf(TERMINAL_VELOCITY, velocity.y + gravity * delta)
+	var direction := Input.get_axis("left" + action_suffix, "right" + action_suffix) * SPEED
+	velocity.x = move_toward(velocity.x, direction, ACCELERATION_SPEED * delta)
+	
+	# Handle animations and direction.
+	if abs(velocity.x) > 1:
+		sprite_2d.animation = "walking"
+	else:
+		sprite_2d.animation = "default"
+	
+	if Input.is_action_just_pressed("attack"):
+		sprite_2d.animation = "fire"
+	
+	# Perform movement and handle sprite flipping based on direction.
 	move_and_slide()
-
-func start_attack() -> void:
-	attacking = true
-	sprite_2d.animation = "attacking"
-	attack_timer.start()
-
-func _on_AttackTimer_timeout() -> void:
-	attacking = false
-	sprite_2d.animation = "idle" if velocity.x == 0 else "walking"
+	sprite_2d.flip_h = velocity.x < 0
+	
+func try_jump() -> void:
+	if is_on_floor():
+		jump_sound.pitch_scale = 1.0
+	elif _double_jump_charged:
+		_double_jump_charged = false
+		velocity.x *= 0.5
+		jump_sound.pitch_scale = 1.5
+	else:
+		return
+	velocity.y = JUMP_VELOCITY
+	jump_sound.play()

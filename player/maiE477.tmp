@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://sk71efsprp11"]
+[gd_scene load_steps=43 format=3 uid="uid://sk71efsprp11"]
 
 [ext_resource type="Texture2D" uid="uid://cuf5r4ojd8f7m" path="res://player/IDLE.png" id="1_epm33"]
 [ext_resource type="Script" path="res://player/mainCharacter.gd" id="1_l34gq"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c5bypebl382o4" path="res://player/DEATH.png" id="3_fvm7x"]
 [ext_resource type="Texture2D" uid="uid://c03xhfaqselp1" path="res://player/HURT.png" id="5_1ck1m"]
 [ext_resource type="Texture2D" uid="uid://bf28fit48nh65" path="res://player/WALK.png" id="6_w7afr"]
-[ext_resource type="AudioStream" uid="uid://sjod173axgwf" path="res://player/jump.wav" id="7_7vlpe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0a8rh"]
 atlas = ExtResource("3_fvm7x")
@@ -299,6 +298,4 @@ frame_progress = 0.661884
 position = Vector2(7, -8.5)
 shape = SubResource("RectangleShape2D_sv5bk")
 
-[node name="Jump" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_7vlpe")
-volume_db = -2.0
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
