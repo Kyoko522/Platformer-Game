@@ -1,41 +1,49 @@
 extends CharacterBody2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
-@onready var sprite_2d = $Sprite2D  #reference to the sprite2D for the main character
+@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var attack_timer: Timer = $AttackTimer  # Reference to the Timer node
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity_value")
+var attacking: bool = false
 
+func _ready():
+	attack_timer.connect("timeout", Callable(self, "_on_AttackTimer_timeout"))
 
-func _physics_process(delta):
-	
-	# Animation for walking 
-	if (velocity.x > 1 || velocity.x < -1):
-		sprite_2d.animation = "walking"
-	else: 
-		sprite_2d.animation = "default"
-	
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
-		#sprite_2d.animation = "jumping"		# Suppose to be for the jumping animation but the promblem with that is that it just keeps running
+func _physics_process(delta: float) -> void:
+	var direction: float = Input.get_axis("left", "right")
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
+	if not attacking:
+		# Update horizontal velocity
 		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
 
+		# Animation handling
+		if direction != 0:
+			sprite_2d.animation = "walking"
+			sprite_2d.flip_h = direction < 0
+		else:
+			sprite_2d.animation = "idle"
+
+		# Handle jumping
+		if is_on_floor() and Input.is_action_just_pressed("jump"):
+			velocity.y = JUMP_VELOCITY
+
+		# Handle attacking
+		if Input.is_action_just_pressed("attack"):
+			start_attack()
+
+	# Apply gravity every frame
+	velocity.y += gravity * delta
+
+	# Pass the velocity to move_and_slide without any arguments
 	move_and_slide()
-	
-	var isLeft = velocity.x < 0
-	sprite_2d.flip_h = isLeft
-	
+
+func start_attack() -> void:
+	attacking = true
+	sprite_2d.animation = "attacking"
+	attack_timer.start()
+
+func _on_AttackTimer_timeout() -> void:
+	attacking = false
+	sprite_2d.animation = "idle" if velocity.x == 0 else "walking"
