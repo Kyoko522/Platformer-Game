@@ -9,6 +9,7 @@ const TERMINAL_VELOCITY = 700.0  # Define TERMINAL_VELOCITY constant
 
 @onready var sprite_2d = $Sprite2D  # Reference to the Sprite2D node for the main character
 @onready var jump_sound := $Jump 
+@onready var animation = $AnimationPlayer 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -38,7 +39,7 @@ func _physics_process(delta):
 		sprite_2d.animation = "default"
 	
 	if Input.is_action_just_pressed("attack"):
-		sprite_2d.animation = "fire"
+		animation.play("attacking")
 	
 	# Perform movement and handle sprite flipping based on direction.
 	move_and_slide()
