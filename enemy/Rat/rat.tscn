@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://doxax5n62mmo"]
+
+[ext_resource type="Texture2D" uid="uid://cip2pu2qjlh4t" path="res://enemy/Rat/rat-idle-outline.png" id="1_arnn0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdt76"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xea5"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c8fbq"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gg08m"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_711ko"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3db2"]
+atlas = ExtResource("1_arnn0")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lemmb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pdt76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xea5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c8fbq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gg08m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_711ko")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3db2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mntcc"]
+size = Vector2(51.5, 30)
+
+[node name="rat" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 13)
+scale = Vector2(2.21875, 2)
+sprite_frames = SubResource("SpriteFrames_lemmb")
+animation = &"idle"
+frame_progress = 0.794996
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 30)
+shape = SubResource("RectangleShape2D_mntcc")
+
+[node name="FloorDetector" type="RayCast2D" parent="."]
+texture_filter = 1
+position = Vector2(28, 41)
+target_position = Vector2(0, 7)
+
+[node name="FloorDetector2" type="RayCast2D" parent="."]
+texture_filter = 1
+position = Vector2(-27, 41)
+target_position = Vector2(0, 8)
