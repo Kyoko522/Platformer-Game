@@ -5,8 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://bqf7x5j20jc1h" path="res://enemy/Rat/rat-run-outline.png" id="3_kyv18"]
 [ext_resource type="Texture2D" uid="uid://dj134i2df1cmp" path="res://enemy/Rat/rat-death-outline.png" id="4_cyl23"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mntcc"]
-size = Vector2(51.5, 30)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xfsc3"]
+radius = 7.98235
+height = 45.4301
 
 [sub_resource type="Animation" id="Animation_3pb6l"]
 resource_name = "walking"
@@ -329,9 +330,10 @@ texture = ExtResource("1_arnn0")
 hframes = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 30)
-shape = SubResource("RectangleShape2D_mntcc")
+texture_filter = 1
+position = Vector2(1, 34)
+rotation = 1.37209
+shape = SubResource("CapsuleShape2D_xfsc3")
 
 [node name="FloorDetector" type="RayCast2D" parent="."]
 visible = false

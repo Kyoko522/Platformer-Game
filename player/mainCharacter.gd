@@ -18,6 +18,8 @@ var last_facing_direction = 1  # 1 for right, -1 for left
 
 var is_attacking = false
 
+var health = 200
+
 func _physics_process(delta):
 	if is_on_floor():
 		_double_jump_charged = true
@@ -34,7 +36,6 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION_SPEED * delta)
 	else: 
 		var direction = Input.get_axis("left" + action_suffix, "right" + action_suffix)
-		velocity.x = 0
 
 	if not is_attacking:
 		if abs(velocity.x) > 1:

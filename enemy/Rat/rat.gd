@@ -5,6 +5,8 @@ var is_facing_right = false  # Keeps track of the current direction
 
 var gravity = ProjectSettings.get("physics/2d/default_gravity")
 
+var health = 50
+
 @onready var floor_detector_2 = $FloorDetector2 as RayCast2D
 @onready var floor_detector = $FloorDetector as RayCast2D
 @onready var sprite_2d = $Sprite2D
