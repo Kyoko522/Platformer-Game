@@ -280,7 +280,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sv5bk"]
-size = Vector2(56, 87)
+size = Vector2(41, 87)
 
 [sub_resource type="Animation" id="Animation_puh72"]
 length = 0.001
@@ -331,7 +331,7 @@ animation = &"fire"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(7, -8.5)
+position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_sv5bk")
 
 [node name="Jump" type="AudioStreamPlayer" parent="."]
