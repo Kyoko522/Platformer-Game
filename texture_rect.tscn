@@ -1225,8 +1225,17 @@ position = Vector2(720, 745)
 scale = Vector2(1.53333, 1.53846)
 script = ExtResource("5_3f5i5")
 
-[node name="RayCast2D" type="RayCast2D" parent="ratEnemy"]
-texture_filter = 1
-position = Vector2(-401.739, -484.9)
-scale = Vector2(0.652174, 0.65)
-target_position = Vector2(50, 10)
+[node name="ratEnemy2" parent="." instance=ExtResource("4_lhsix")]
+position = Vector2(1053, 507)
+scale = Vector2(1.53333, 1.53846)
+script = ExtResource("5_3f5i5")
+
+[node name="ratEnemy3" parent="." instance=ExtResource("4_lhsix")]
+position = Vector2(649, 218)
+scale = Vector2(1.53333, 1.53846)
+script = ExtResource("5_3f5i5")
+
+[node name="ratEnemy4" parent="." instance=ExtResource("4_lhsix")]
+position = Vector2(1137, 100)
+scale = Vector2(1.53333, 1.53846)
+script = ExtResource("5_3f5i5")
