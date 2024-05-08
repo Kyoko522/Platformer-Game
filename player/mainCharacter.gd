@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var action_suffix := ""
+@export var is_attacking: bool = false
 
 const SPEED = 300.0
 const ACCELERATION_SPEED = SPEED * 6.0
@@ -10,13 +11,14 @@ const TERMINAL_VELOCITY = 700.0  # Define TERMINAL_VELOCITY constant
 @onready var sprite_2d = $Sprite2D  # Reference to the Sprite2D node for the main character
 @onready var jump_sound := $Jump 
 @onready var animation_player = $AnimationPlayer 
+@onready var damagable_area = $Damagable_Area
+
+
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var _double_jump_charged = false
 var last_facing_direction = 1  # 1 for right, -1 for left
-
-var is_attacking = false
 
 var health = 200
 
@@ -49,6 +51,7 @@ func _physics_process(delta):
 		velocity.y = 0
 		animation_player.play("attack")
 		await get_tree().create_timer(1).timeout
+		attacking()
 		is_attacking = false
 		if abs(velocity.x) > 1:
 			animation_player.play("run")
@@ -57,7 +60,7 @@ func _physics_process(delta):
 
 	move_and_slide()
 	sprite_2d.flip_h = last_facing_direction == -1
-
+	#damagable_area.flip_h = last_facing_direction == -1
 
 func try_jump() -> void:
 	if is_on_floor():
@@ -70,3 +73,11 @@ func try_jump() -> void:
 		return
 	velocity.y = JUMP_VELOCITY
 	jump_sound.play()
+
+func attacking():
+	pass
+	
+	# Player script
+func get_is_attacking() -> bool:
+	return is_attacking
+
